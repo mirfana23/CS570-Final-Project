@@ -1,1 +1,2 @@
 *.json filter=lfs diff=lfs merge=lfs -text
+datasets/imgnet1k_our/train0.json filter=lfs diff=lfs merge=lfs -text
