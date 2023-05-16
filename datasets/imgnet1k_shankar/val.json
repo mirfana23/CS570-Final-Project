@@ -1,7 +1,7 @@
 {
     "data": [
         {
-            "filepath": "/root/fakedataset/ILSVRC2012_val_00000001.JPEG",
+            "img_path": "/root/fakeval/ILSVRC2012_val_00000001.JPEG",
             "labels": [1, 30, 22]
         }
     ]
