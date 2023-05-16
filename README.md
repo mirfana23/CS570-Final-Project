@@ -7,7 +7,7 @@ ImageNet, as the most well-known image classification benchmark, suffers from th
 Our goal is to relabel ImageNet to enable multi-label support, utilizing only the existing data within the ImageNet dataset.
 
 ## Proposed Methodology
-Our method for multi-labeling ImageNet consists of three steps: Cropping, Confidence, and Label.
+Our method for multi-labeling ImageNet consists of three steps: **Cropping, Confidence, and Label**.
 
 ![alt text](https://github.com/mirfana23/CS570-Final-Project/blob/main/methodology.png?raw=true)
 
