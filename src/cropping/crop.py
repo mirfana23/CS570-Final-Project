@@ -29,24 +29,20 @@ class Cropper:
             self.model = self.model.to(device).eval()  # Move model to GPU
 
         # Define the image transformations: resizing and converting to tensor
-        self.transform = transforms.Compose([
-            transforms.Resize(self.output_size),
-            transforms.Lambda(lambda img: img.convert('RGB')),
-            transforms.ToTensor(),
-            transforms.Lambda(lambda t: t.to(self.device))  # Move tensor to the specified device
-        ])
+        self.transform = transforms.Resize(self.output_size, antialias=True)
 
     def random_crop(self, image):
         """
         Perform random cropping on the input image.
         """
 
-        width, height = image.size
+        # width, height = image.size
+        B, channels, height, width = image.shape # NOTE: Changed by Hamza
+        # B=1, channels=3, width=224, height=224
 
         # Adjust crop size if it's larger than the image size 
         if self.crop_size[0] >= width or self.crop_size[1] >= height:
-            self.crop_size = (int(width * 0.9), int(height * 0.9))
-          
+            self.crop_size = (int(width * 0.9), int(height * 0.9))          
         output_images = []
 
         # Produce the required number of crops
@@ -61,12 +57,13 @@ class Cropper:
             y = torch.randint(0, max_y, (1,)).item()
 
             # Crop the image and resize if necessary
-            cropped_image = image.crop((x, y, x + self.crop_size[0], y + self.crop_size[1]))
+            cropped_image = image[...,  y:y+self.crop_size[1], x:x+self.crop_size[0]]
+            
             if self.crop_size != self.output_size:
-                cropped_image = cropped_image.resize(self.output_size)
+                cropped_image = self.transform(cropped_image)
             
             # Apply transformations and add to the list of output images
-            output_images.append(self.transform(cropped_image))
+            output_images.append(cropped_image)
         
         return output_images
 
@@ -74,9 +71,6 @@ class Cropper:
         """
         Perform cropping using a Region Proposal Network (RPN) on the input image.
         """
-
-        # Move the image to GPU and add batch dimension
-        img_tensor = self.transform(image).unsqueeze(0).to(self.device)
 
         # Get the model's predictions
         with torch.no_grad():
@@ -91,14 +85,14 @@ class Cropper:
             box = tuple(map(int, box.round().tolist()))
 
             # Crop the image using the bounding box coordinates
-            cropped_image = image.crop(box)
+            cropped_image = image[..., box[1]:box[3], box[0]:box[2]]
 
             # Resize the cropped image if necessary
             if self.resize_rpn_output:
-                cropped_image = cropped_image.resize(self.output_size)
+                cropped_image = self.transform(cropped_image)
 
             # Apply transformations and add to the list of output images
-            output_images.append(transforms.ToTensor()(cropped_image))
+            output_images.append(cropped_image)
 
         return output_images
 

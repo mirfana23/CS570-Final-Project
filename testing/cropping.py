@@ -2,17 +2,25 @@ import argparse
 import matplotlib.pyplot as plt
 from PIL import Image
 import torchvision.transforms as transforms
+from torchvision.transforms import ToTensor
 import torchvision
 import torch
 import os
 import time
 from tqdm import tqdm
+from torchvision.io import read_image
 
 import sys
-sys.path.append('/root/CS570-Final-Project/src/cropping')
+# Add the project root directory to the sys.path
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if project_root not in sys.path:
+    sys.path.append(project_root)
 
-from crop import Cropper
-from classify_crop import ImageClassifier
+from src.cropping.crop import Cropper
+from src.cropping.classify_crop import ImageClassifier
+
+from src.cropping.crop import Cropper
+from src.cropping.classify_crop import ImageClassifier
 
 def main(image_dir, method, num_crops, verbose):
 
@@ -26,8 +34,19 @@ def main(image_dir, method, num_crops, verbose):
     for image_path in tqdm(image_paths, desc="Processing images"):
         start_time = time.time()
 
-        # Load the image
+        # Load the image as a tensor
+
         image = Image.open(image_path)
+        image = ToTensor()(image)  # Convert to tensor
+
+        # image = read_image(image_path).float() 
+        
+
+        if image.shape[0] == 1:
+            # Convert the image to RGB by duplicating the single channel 3 times
+            image = image.expand(3, -1, -1)
+
+        image = image.unsqueeze(0)  # Add batch dimension
 
         time_load = time.time() - start_time
         start_time = time.time()
