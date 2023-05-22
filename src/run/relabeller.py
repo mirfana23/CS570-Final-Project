@@ -48,7 +48,7 @@ def relabel(x, y, model, confidence_measure="mc_dropout", post_proc_logits='aver
     Also, keep in mind the time complexity
     '''
     # Instantiate the cropper and classifier
-    cropper = Cropper(method='random', num_crops=5)
+    cropper = Cropper(method= config.crop_method, num_crops=config.num_crops)
     classifier = ImageClassifier(model = model)
     n_classes = 1000
 
@@ -58,7 +58,7 @@ def relabel(x, y, model, confidence_measure="mc_dropout", post_proc_logits='aver
     scores = None
     
     if confidence_measure == 'mc_dropout':
-        cropped_images = torch.stack([public_tr(img) for img in cropped_images], dim=0)
+        cropped_images = torch.stack([public_tr(img/255.0) for img in cropped_images], dim=0)
         cropped_images = cropped_images.squeeze(dim=1).cuda()
         scores = mc_dropout(model, cropped_images, n_classes=n_classes, n_iter=100)
     elif confidence_measure == 'mc_perturbation':

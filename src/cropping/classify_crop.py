@@ -15,16 +15,28 @@ class ImageClassifier:
         self.model = model.to(device).eval()
         self.device = device
 
+        self.transforms = transforms.Compose([
+            transforms.Lambda(lambda x: x / 255.0),
+            transforms.Resize(256, antialias=True),
+            transforms.CenterCrop(224),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ])
+
     def classify(self, image_tensors):
 
+        # Normalize and process each image tensor separately
+        processed_images = []
+        for img_tensor in image_tensors:
+            img_tensor = self.transforms(img_tensor.squeeze(0)) # apply transforms
+            processed_images.append(img_tensor.unsqueeze(0))
+
         # Convert list of tensors to a single batch tensor
-        image_batch = torch.cat(image_tensors).to(self.device)
+        image_batch = torch.cat(processed_images).to(self.device)
 
 
         with torch.no_grad():
             # Perform inference
             output = self.model(image_batch)
-
 
             # Convert output probabilities to predicted class
             _, preds = torch.max(output, 1)
@@ -33,6 +45,5 @@ class ImageClassifier:
             one_hot_preds = torch.zeros((preds.shape[0], 1000), device=self.device)
             one_hot_preds[range(preds.shape[0]), preds] = 1
             one_hot_preds = torch.any(one_hot_preds, dim=0).int().tolist() # perform logical OR along the batch dimension
-
 
         return one_hot_preds

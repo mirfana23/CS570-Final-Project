@@ -6,9 +6,9 @@ load_from_checkpoint: False
 device: cuda
 relabeled_dataset_save_path: /root/CS570-Final-Project/datasets/imgnet1k_original/val_relabelled.json
 
-crop_method: "random"
+crop_method: random
 num_crops: 5
 
-confidence_measure: naive
+confidence_measure: mc_dropout
 post_proc_logits: average
 threshold: 0.0
