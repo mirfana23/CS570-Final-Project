@@ -1,7 +1,7 @@
 import json
 
-path1 = '/root/CS570-Final-Project/datasets/imgnet1k_our/train0.json'
-path2 = '/root/CS570-Final-Project/datasets/imgnet1k_our/train1_naive.json'
+path1 = '/root/CS570-Final-Project/datasets/imgnet1k_original/val.json'
+path2 = '/root/CS570-Final-Project/datasets/imgnet1k_original/val_relabelled_debug.json'
 
 with open(path1, "rb") as f:
     data1 = json.load(f)['data']

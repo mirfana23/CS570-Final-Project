@@ -7,11 +7,11 @@ device: cuda
 relabeled_dataset_save_path: /root/CS570-Final-Project/datasets/imgnet1k_original/val_relabelled_debug.json
 
 crop_method: random
-num_crops: 3
+num_crops: 5
 crop_size_method: range
 
-confidence_measure: naive
+confidence_measure: mc_dropout
 dropout_rate: 0.05
-post_proc_logits: average
-threshold: 0.6
+post_proc_logits: majority
+threshold: 0.5
 num_relabel: 100
