@@ -13,10 +13,10 @@ val_datasets:
     json_dir: /root/CS570-Final-Project/datasets/imgnet1k_original/val.json
     batch_size: 512
     num_workers: 4
-  - name: shankar
-    json_dir: /root/CS570-Final-Project/datasets/imgnet1k_shankar/val.json
-    batch_size: 512
-    num_workers: 4
+  # - name: shankar
+  #   json_dir: /root/CS570-Final-Project/datasets/imgnet1k_shankar/val.json
+  #   batch_size: 512
+  #   num_workers: 4
 
 optimizer:
   lr: 0.001

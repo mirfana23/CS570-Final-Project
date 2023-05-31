@@ -59,3 +59,21 @@ From the main directory, run the following commands:
 cd src/run
 python relabeller.py --config ../../config/relabel_mc_perturbation.yaml
 ```
+
+### How to Train a Resnet50 Model 
+
+#### With the Original Dataset
+From the main directory, run the following commands:
+```
+cd src/run
+python trainer.py --config ../../config/train_base.yaml
+```
+Feel free to modify the config file to change the hyperparameters or the number of epochs etc.
+
+#### With the Relabeled Dataset
+From the main directory, run the following commands:
+```
+cd src/run
+python trainer.py --config ../../config/train_relabeled.yaml
+```
+At the moment, the config file is not yet created. 
