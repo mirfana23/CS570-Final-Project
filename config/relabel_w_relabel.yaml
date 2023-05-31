@@ -1,0 +1,16 @@
+dataset:
+  json_dir: /root/CS570-Final-Project/datasets/imgnet1k_original/val.json
+  num_workers: 0
+
+load_from_checkpoint: /root/CS570-Final-Project/pt_models/rn50_relabel_78.9.pth
+device: cuda
+relabeled_dataset_save_path: /root/CS570-Final-Project/datasets/imgnet1k_original/val_relabelled_w_relabel.json
+
+crop_method: random
+num_crops: 5
+crop_size_method: fixed
+
+confidence_measure: mc_dropout
+dropout_rate: 0.05
+post_proc_logits: average
+threshold: 0.09

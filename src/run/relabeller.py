@@ -48,7 +48,7 @@ def relabel(x, y, model, confidence_measure="mc_dropout", post_proc_logits='aver
     Also, keep in mind the time complexity
     '''
     # Instantiate the cropper and classifier
-    cropper = Cropper(method= config.crop_method, num_crops=config.num_crops)
+    cropper = Cropper(method= config.crop_method, num_crops=config.num_crops, crop_size_method = config.crop_size_method)
     classifier = ImageClassifier(model = model)
     n_classes = 1000
 
@@ -60,7 +60,7 @@ def relabel(x, y, model, confidence_measure="mc_dropout", post_proc_logits='aver
     if confidence_measure == 'mc_dropout':
         cropped_images = torch.stack([public_tr(img/255.0) for img in cropped_images], dim=0)
         cropped_images = cropped_images.squeeze(dim=1).cuda()
-        scores = mc_dropout(model, cropped_images, n_classes=n_classes, n_iter=100)
+        scores = mc_dropout(model, cropped_images, n_classes=n_classes, n_iter=100, rate=config.dropout_rate)
     elif confidence_measure == 'mc_perturbation':
         cropped_images = torch.stack(cropped_images, dim=0)
         cropped_images = cropped_images.type(torch.uint8)
@@ -76,9 +76,18 @@ def relabel(x, y, model, confidence_measure="mc_dropout", post_proc_logits='aver
         y_pred = torch.zeros(n_classes)
         if post_proc_logits == 'average':
             scores = scores.mean(dim=1)
+            idx = torch.argmax(scores, dim=-1)
+        elif post_proc_logits == 'majority': 
+            preds = scores.argmax(dim=2)
+            idx, scores = [], []
+            for p in preds:
+                counts = torch.bincount(p, minlength=1000)
+                idx.append(torch.argmax(counts))
+                scores.append(counts / torch.sum(counts))
+            idx = torch.tensor(idx)
+            scores = torch.stack(scores)
         else:
-            raise NotImplementedError('You should select post_proc_logits in [average]')
-        idx = torch.argmax(scores, dim=-1)
+            raise NotImplementedError('You should select post_proc_logits in [average]')    
         idx_filter = torch.max(torch.softmax(scores, dim=-1), dim=-1)[0] > threshold
         idx = idx[idx_filter]
         y_pred[idx] = 1
@@ -107,32 +116,34 @@ if __name__ == '__main__':
     model = model.to(config.device)
 
     # Initialize the data loaders
-    # NOTE: For now, the type if 'val' as we are checking whether our method works well or not
     dataset = ImgNetDataset(json_path=config.dataset.json_dir, type='relabel')
     # For now, we traverse image by image
-    # NOTE: For picking a random subset, shuffle is set to True, change later in the future
     dataloader = DataLoader(dataset, batch_size=1, shuffle=True, num_workers=config.dataset.num_workers)
 
     dataset_json = json.load(open(config.dataset.json_dir, 'r'))
     dataset_json = dataset_json['data']
 
     result_json = {}
-    result_json['data'] = []
+    result_json['data'] = dataset_json
     
     # traverse the images
-    for i, (x, y, img_idx) in tqdm(enumerate(dataloader), total = len(dataloader)):
-        new_labels = relabel(x, y, model, confidence_measure=config.confidence_measure, post_proc_logits=config.post_proc_logits, 
-                             threshold=config.threshold) 
-        new_labels = [idx for idx, val in enumerate(new_labels) if int(val) == 1]
-        result_json['data'].append({
-            'img_path': dataset_json[img_idx[0]]['img_path'],
-            'labels': new_labels
-        })
+    for i, (x, y, img_idx) in tqdm(enumerate(dataloader), total = min(len(dataloader), config.num_relabel)):
+        
+        if i == config.num_relabel:
+            break
 
-        if i % 1000 == 0 and i > 0:
+        new_labels = relabel(x, y, model, confidence_measure=config.confidence_measure, post_proc_logits=config.post_proc_logits, 
+                            threshold=config.threshold) 
+        new_labels = [idx for idx, val in enumerate(new_labels) if int(val) == 1]
+        orig_label = torch.argmax(y).item()
+        
+        if orig_label not in new_labels:
+            new_labels += [orig_label]
+    
+        result_json['data'][img_idx[0]]['labels'] = new_labels
+
+        if i % 10000 == 0 and i > 0:
             print(f'Processed {i} images')
             save_relabeled()
-            # NOTE: We break here as our goal is to check whether the relabelling works well or not
-            break 
 
     save_relabeled()

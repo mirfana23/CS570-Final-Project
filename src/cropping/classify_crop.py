@@ -30,6 +30,10 @@ class ImageClassifier:
             img_tensor = self.transforms(img_tensor.squeeze(0)) # apply transforms
             processed_images.append(img_tensor.unsqueeze(0))
 
+        # If no images were processed, return a list of 1000 zeros
+        if not processed_images:
+            return [0]*1000
+
         # Convert list of tensors to a single batch tensor
         image_batch = torch.cat(processed_images).to(self.device)
 

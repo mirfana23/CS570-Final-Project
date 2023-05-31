@@ -1,0 +1,24 @@
+Average jaccard similarity
+[(3, 'mc_perturbation')]
+[(('random', 10, 'fixed', 'mc_perturbation', 'average', 0.6), {'Average jaccard similarity': 0.68, 'Average precision': 0.7, 'Average recall': 0.69, 'Average f1 score': 0.69})]
+[(3, 'mc_dropout')]
+[(('random', 3, 'fixed', 'mc_dropout', 'average', 0.0), {'Average jaccard similarity': 0.0, 'Average precision': 0.0, 'Average recall': 0.01, 'Average f1 score': 0.01})]
+[(3, 'naive')]
+[(('random', 3, 'range', 'naive', 'average', 0.6), {'Average jaccard similarity': 0.72, 'Average precision': 0.76, 'Average recall': 0.83, 'Average f1 score': 0.77})]
+
+Average precision
+[(3, 'mc_perturbation')]
+[(('random', 5, 'range', 'mc_perturbation', 'average', 0.4), {'Average jaccard similarity': 0.67, 'Average precision': 0.71, 'Average recall': 0.7, 'Average f1 score': 0.69})]
+[(3, 'mc_dropout')]
+[(('random', 3, 'range', 'mc_dropout', 'average', 0.0), {'Average jaccard similarity': 0.0, 'Average precision': 0.01, 'Average recall': 0.01, 'Average f1 score': 0.01})]
+[(3, 'naive')]
+[(('random', 3, 'range', 'naive', 'average', 0.6), {'Average jaccard similarity': 0.72, 'Average precision': 0.76, 'Average recall': 0.83, 'Average f1 score': 0.77})]
+
+Average f1 score
+[(3, 'mc_perturbation')]
+[(('random', 20, 'fixed', 'mc_perturbation', 'average', 0.3), {'Average jaccard similarity': 0.65, 'Average precision': 0.68, 'Average recall': 0.83, 'Average f1 score': 0.72})]
+[(3, 'mc_dropout')]
+[(('random', 3, 'fixed', 'mc_dropout', 'average', 0.0), {'Average jaccard similarity': 0.0, 'Average precision': 0.0, 'Average recall': 0.01, 'Average f1 score': 0.01})]
+[(3, 'naive')]
+[(('random', 3, 'fixed', 'naive', 'average', 0.4), {'Average jaccard similarity': 0.71, 'Average precision': 0.75, 'Average recall': 0.86, 'Average f1 score': 0.77})]
+

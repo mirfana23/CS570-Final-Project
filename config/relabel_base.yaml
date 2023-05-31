@@ -4,11 +4,14 @@ dataset:
 
 load_from_checkpoint: False
 device: cuda
-relabeled_dataset_save_path: /root/CS570-Final-Project/datasets/imgnet1k_original/val_relabelled.json
+relabeled_dataset_save_path: /root/CS570-Final-Project/datasets/imgnet1k_original/val_relabelled_debug.json
 
 crop_method: random
-num_crops: 5
+num_crops: 3
+crop_size_method: range
 
-confidence_measure: mc_dropout
+confidence_measure: naive
+dropout_rate: 0.05
 post_proc_logits: average
-threshold: 0.0
+threshold: 0.6
+num_relabel: 100

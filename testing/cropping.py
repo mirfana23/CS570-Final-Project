@@ -22,13 +22,13 @@ from src.cropping.classify_crop import ImageClassifier
 from src.cropping.crop import Cropper
 from src.cropping.classify_crop import ImageClassifier
 
-def main(image_dir, method, num_crops, verbose):
+def main(image_dir, method, num_crops, crop_size_method, verbose):
 
     # List to store all image paths
     image_paths = [os.path.join(image_dir, img) for img in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, img))]
 
     # Instantiate the cropper and classifier
-    cropper = Cropper(method=method, num_crops=num_crops)
+    cropper = Cropper(method=method, num_crops=num_crops, crop_size_method=crop_size_method)
     classifier = ImageClassifier()
 
     for image_path in tqdm(image_paths, desc="Processing images"):
@@ -72,9 +72,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process some images.')
     parser.add_argument('--image_dir', default="/root/dataset/val", help='Path to image directory')
     parser.add_argument('--method', default='random', choices=['random', 'rpn'], help='Cropping method')
+    parser.add_argument('--crop_size_method', default='fixed', choices=['fixed', 'range'], help='Cropping size method')
     parser.add_argument('--num_crops', type=int, default=5, help='Number of crops (for random method)')
     parser.add_argument('--verbose', type=int, default=0, choices=[0, 1], help='Whether to print verbose output')
 
     args = parser.parse_args()
 
-    main(args.image_dir, args.method, args.num_crops, args.verbose)
+    main(args.image_dir, args.method, args.num_crops, args.crop_size_method, args.verbose)

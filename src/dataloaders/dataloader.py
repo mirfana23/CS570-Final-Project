@@ -45,6 +45,13 @@ class ImgNetDataset(Dataset):
             ])
         elif self.type == 'relabel':
             self.transform = None
+        elif self.type == 'relabel_w_relabel':
+            self.transform = transforms.Compose([
+                transforms.ToTensor(),
+                transforms.Resize(256, antialias=True),
+                transforms.CenterCrop(224),
+                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            ])
         else:
             raise Exception("Invalid type")
     
@@ -66,7 +73,7 @@ class ImgNetDataset(Dataset):
         if len(labels) > 0:
             y[labels] = 1
         
-        if self.type == 'relabel':
+        if self.type == 'relabel' or self.type == 'relabel_w_relabel':
             return x, y, idx
 
         return x, y

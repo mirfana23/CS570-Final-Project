@@ -2,17 +2,20 @@ import torch
 from torchvision.transforms.autoaugment import AutoAugment, _apply_op
 import random 
 
-def append_dropout(model, rate=0.2):
+def append_dropout(model, rate=0.05):
     for name, module in model.named_children():
-        if len(list(module.children())) > 0:
-            append_dropout(module)
-        if isinstance(module, torch.nn.ReLU):
-            new = torch.nn.Sequential(module, torch.nn.Dropout2d(p=rate, inplace=True))
+        # if len(list(module.children())) > 0:
+        #     append_dropout(module)
+        # if isinstance(module, torch.nn.ReLU):
+            # new = torch.nn.Sequential(module, torch.nn.Dropout2d(p=rate, inplace=True))
+            # setattr(model, name, new)
+        if isinstance(module, torch.nn.AdaptiveAvgPool2d):
+            new = torch.nn.Sequential(torch.nn.Dropout2d(p=rate, inplace=True), module)
             setattr(model, name, new)
 
-def mc_dropout(model, images, n_classes, n_iter): 
-    append_dropout(model)
-    model.train() # for bayesian inference
+def mc_dropout(model, images, n_classes, n_iter, rate=0.05): 
+    append_dropout(model, rate)
+    # model.train() # for bayesian inference
     model = model.cuda()
     confidence_scores = torch.zeros(images.size(0), n_iter, n_classes) # batchsize x num_iteration x n_classes
     for i in range(n_iter): 

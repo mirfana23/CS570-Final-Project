@@ -27,7 +27,11 @@ parser.add_argument('--pred_dataset_path', type=str, default='/root/CS570-Final-
 parser.add_argument('--gt_dataset_path', type=str, default='/root/CS570-Final-Project/datasets/imgnet1k_ReaL/val.json', help='path to the ground truth dataset')
 args = parser.parse_args()
 
-
+def safe_division(x, y):
+    try:
+        return x / y
+    except:
+        return 0
 
 # json file of our validation set
 relabel_json = json.load(open(args.pred_dataset_path, 'r')) # original validation set
@@ -42,6 +46,25 @@ labels_dict_real = {}
 for sample in real_json['data']:
     labels_dict_real[sample['img_path']] = sample['labels']
 
+# NOTE: Turn this off later
+# path_old_label_mapping = '/root/CS570-Final-Project/datasets/map_clsloc.txt'
+# path_cur_label_mapping = '/root/CS570-Final-Project/datasets/imagenet_class_index.json'
+# old_label_mapping = {}
+# with open(path_old_label_mapping, 'r') as f:
+#     old_label_info = f.readlines()
+#     for line in old_label_info:
+#         label_id, label_idx, _ = line.split()
+#         old_label_mapping[label_id] = int(label_idx)
+# label_mapping = {}
+# with open(path_cur_label_mapping, 'r') as f:
+#     cur_label_mapping = json.load(f)
+#     for label_idx, label_info in cur_label_mapping.items():
+#         label_mapping[old_label_mapping[label_info[0]]] = int(label_idx)
+
+# # transform labels to the same format
+# for key in labels_dict_relabel.keys():
+#     labels_dict_relabel[key] = [label_mapping[label] for label in labels_dict_relabel[key]]
+
 avg_jaccard_sim = 0
 cnt = 0
 for key in labels_dict_relabel.keys():
@@ -49,11 +72,10 @@ for key in labels_dict_relabel.keys():
     labels_real = set(labels_dict_real[key])
     if len(labels_real) == 0:
         continue
-    jaccard_sim = len(labels_relabel.intersection(labels_real)) / len(labels_relabel.union(labels_real))
+    jaccard_sim = safe_division(len(labels_relabel.intersection(labels_real)), len(labels_relabel.union(labels_real)))
     avg_jaccard_sim += jaccard_sim
     cnt += 1
-avg_jaccard_sim /= cnt
-print(f'Average jaccard similarity: {avg_jaccard_sim}')
+avg_jaccard_sim = safe_division(avg_jaccard_sim, cnt)
 
 avg_prec, avg_recall = 0, 0
 cnt = 0
@@ -62,14 +84,13 @@ for key in labels_dict_relabel.keys():
     labels_real = set(labels_dict_real[key])
     if len(labels_real) == 0:
         continue
-    precision = len(labels_relabel.intersection(labels_real)) / len(labels_relabel)
-    recall = len(labels_relabel.intersection(labels_real)) / len(labels_real)
+    precision = safe_division(len(labels_relabel.intersection(labels_real)), len(labels_relabel))
+    recall = safe_division(len(labels_relabel.intersection(labels_real)), len(labels_real))
     avg_prec += precision
     avg_recall += recall
     cnt += 1
-avg_prec /= cnt
-avg_recall /= cnt
-print(f'Average precision: {avg_prec}, Average recall: {avg_recall}')
+avg_prec = safe_division(avg_prec, cnt)
+avg_recall = safe_division(avg_recall, cnt)
 
 avg_f1 = 0
 cnt = 0
@@ -78,14 +99,14 @@ for key in labels_dict_relabel.keys():
     labels_real = set(labels_dict_real[key])
     if len(labels_real) == 0:
         continue
-    precision = len(labels_relabel.intersection(labels_real)) / len(labels_relabel)
-    recall = len(labels_relabel.intersection(labels_real)) / len(labels_real)
+    precision = safe_division(len(labels_relabel.intersection(labels_real)), len(labels_relabel))
+    recall = safe_division(len(labels_relabel.intersection(labels_real)), len(labels_real))
     try:
-        f1 = 2 * precision * recall / (precision + recall)
+        f1 = safe_division(2 * precision * recall, (precision + recall))
     except ZeroDivisionError:
         f1 = 0
     avg_f1 += f1
     cnt += 1
-avg_f1 /= cnt
-print(f'Average f1 score: {avg_f1}')
+avg_f1 = safe_division(avg_f1, cnt)
 
+print(f'Average jaccard similarity: {avg_jaccard_sim:.2f}, Average precision: {avg_prec:.2f}, Average recall: {avg_recall:.2f}, Average f1 score: {avg_f1:.2f}')

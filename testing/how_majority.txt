@@ -1,0 +1,20 @@
+best results for Average jaccard similarity:  [
+    (('random', 3, 'fixed', 'naive', 'majority', 0.1), {'Average jaccard similarity': 0.69, 'Average precision': 0.7, 'Average recall': 0.87, 'Average f1 score': 0.75}), 
+    (('random', 3, 'fixed', 'naive', 'majority', 0.0), {'Average jaccard similarity': 0.66, 'Average precision': 0.7, 'Average recall': 0.82, 'Average f1 score': 0.72}), 
+    (('random', 5, 'fixed', 'naive', 'majority', 0.2), {'Average jaccard similarity': 0.66, 'Average precision': 0.68, 'Average recall': 0.88, 'Average f1 score': 0.72})
+]
+best results for Average precision:  [
+    (('random', 3, 'range', 'naive', 'majority', 0.6), {'Average jaccard similarity': 0.65, 'Average precision': 0.71, 'Average recall': 0.79, 'Average f1 score': 0.71}), 
+    (('random', 3, 'fixed', 'naive', 'majority', 0.0), {'Average jaccard similarity': 0.66, 'Average precision': 0.7, 'Average recall': 0.82, 'Average f1 score': 0.72}), 
+    (('random', 3, 'fixed', 'naive', 'majority', 0.1), {'Average jaccard similarity': 0.69, 'Average precision': 0.7, 'Average recall': 0.87, 'Average f1 score': 0.75})
+]
+best results for Average recall:  [
+    (('random', 10, 'fixed', 'naive', 'majority', 0.2), {'Average jaccard similarity': 0.58, 'Average precision': 0.6, 'Average recall': 0.92, 'Average f1 score': 0.67}), 
+    (('random', 5, 'fixed', 'naive', 'majority', 0.1), {'Average jaccard similarity': 0.65, 'Average precision': 0.67, 'Average recall': 0.88, 'Average f1 score': 0.73}), 
+    (('random', 5, 'fixed', 'naive', 'majority', 0.2), {'Average jaccard similarity': 0.66, 'Average precision': 0.68, 'Average recall': 0.88, 'Average f1 score': 0.72})
+]
+best results for Average f1 score:  [
+    (('random', 3, 'fixed', 'naive', 'majority', 0.1), {'Average jaccard similarity': 0.69, 'Average precision': 0.7, 'Average recall': 0.87, 'Average f1 score': 0.75}), 
+    (('random', 5, 'fixed', 'naive', 'majority', 0.1), {'Average jaccard similarity': 0.65, 'Average precision': 0.67, 'Average recall': 0.88, 'Average f1 score': 0.73}), 
+    (('random', 3, 'fixed', 'naive', 'majority', 0.0), {'Average jaccard similarity': 0.66, 'Average precision': 0.7, 'Average recall': 0.82, 'Average f1 score': 0.72})
+]

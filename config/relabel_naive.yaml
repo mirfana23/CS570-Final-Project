@@ -1,0 +1,17 @@
+dataset:
+  json_dir: /root/CS570-Final-Project/datasets/imgnet1k_our/train0.json # the base path should be adjusted
+  num_workers: 0 # this should be updated
+
+load_from_checkpoint: False
+device: cuda
+relabeled_dataset_save_path: /root/CS570-Final-Project/datasets/imgnet1k_our/train1_naive.json # the base path should be adjusted
+
+crop_method: random
+num_crops: 3
+crop_size_method: fixed
+
+confidence_measure: naive
+dropout_rate: 0.05
+post_proc_logits: average
+threshold: 0.6
+num_relabel: 100
