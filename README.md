@@ -28,3 +28,34 @@ After a pass of this relabelling process, we re-train the model with the multipl
 - **Original Dataset**: Imagenet-1K
 - **Test Dataset**: Imagenet-1K validation set (single-label), Imagenet2012_multilabel (multi-label), Imagenet_Real (multi-label)
 - **Metric**: Single-label accuracy (Top-1 / Top-5 accuracy)
+
+## How to Run the Code
+
+### Structure of the Config File
+The config file is a YAML file that contains all the parameters needed to run the code. The config files are located under the path: CS570-Final-Project/config. The current version of the config files contain the optimized hyperparameters for each setup. However, the followings should be set appropriately before running the code:
+
+- **json_dir:**: Currently, it is set to `/root/CS570-Final-Project/datasets/imgnet1k_our/train0.json`, it stores the path to the json file that contains the original labels for the training set. The base path should be updated if the code is run in a different server.
+- **num_workers:**: Currently, it is set to 0, it stores the number of workers for the dataloader. It should be updated based on the server's capacity.
+- **relabeled_dataset_save_path:**: Currently, it is set to `/root/CS570-Final-Project/datasets/imgnet1k_our/train1_mc_dropout.json`, it stores the path to the json file that will be created after relabelling the training set. The base path should be updated if the code is run in a different server.
+- **num_relabel:**: Currently, it is set to 100, it stores the number of images that will be relabelled in each iteration. It should be updated based on the time it will take to relabel the images.
+
+### How to Relabel with Naive
+From the main directory, run the following commands:
+```
+cd src/run
+python relabeller.py --config ../../config/relabel_naive.yaml
+```
+
+### How to Relabel with MC Dropout
+From the main directory, run the following commands:
+```
+cd src/run
+python relabeller.py --config ../../config/relabel_mc_dropout.yaml
+```
+
+### How to Relabel with MC Perturbation
+From the main directory, run the following commands:
+```
+cd src/run
+python relabeller.py --config ../../config/relabel_mc_perturbation.yaml
+```
