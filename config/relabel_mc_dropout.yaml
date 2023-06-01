@@ -7,11 +7,11 @@ device: cuda
 relabeled_dataset_save_path: /root/CS570-Final-Project/datasets/imgnet1k_our/train1_mc_dropout.json # the base path should be adjusted
 
 crop_method: random
-num_crops: 5
-crop_size_method: range
+num_crops: 10
+crop_size_method: fixed
 
 confidence_measure: mc_dropout
 dropout_rate: 0.05
-post_proc_logits: majority
+post_proc_logits: average
 threshold: 0.5
 num_relabel: 100

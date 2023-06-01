@@ -1,1 +1,1 @@
-Average jaccard similarity: 0.75, Average precision: 0.84, Average recall: 0.75, Average f1 score: 0.77
+Average jaccard similarity: 0.36, Average precision: 0.37, Average recall: 0.41, Average f1 score: 0.38

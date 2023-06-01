@@ -46,5 +46,5 @@ class MetricAvg:
     def get_all(self):
         return {
             metric_name: self.get(metric_name)
-            for metric_name in self.metrics.metric_names
+            for metric_name in self.metric_names
         }

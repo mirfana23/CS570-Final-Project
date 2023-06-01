@@ -12,6 +12,6 @@ crop_size_method: fixed
 
 confidence_measure: mc_perturbation
 dropout_rate: 0.05
-post_proc_logits: majority
-threshold: 0.6
+post_proc_logits: average
+threshold: 0.3
 num_relabel: 100
