@@ -125,7 +125,14 @@ for epoch in range(config.num_epochs):
                 loss = loss_fn(y_hat, y)
                 
                 metric_avg.update('avg_loss', loss.item(), 1) # NOTE: We send the batch-wise average loss here. If you wish to send individual losses, change this to loss.item() * batch_size, batch_size
-                # TODO: Implement computation of acc1 and acc5
+                
+                # acc1
+                max_idx = torch.argmax(y_hat, dim=1)
+                b_idx = torch.arange(y.shape[0])
+                acc1_sum = torch.sum(y[b_idx, max_idx] == 1).item()
+
+                metric_avg.update('acc1', acc1_sum, y.shape[0])
+                # TODO: Implement computation of acc5
                 progress_bar.set_postfix(metric_avg.get_all())
  
         print(f"Epoch {epoch} {val_dataset.name}, metrics: {metric_avg.get_all()}")

@@ -14,4 +14,4 @@ confidence_measure: mc_dropout
 dropout_rate: 0.05
 post_proc_logits: majority
 threshold: 0.5
-num_relabel: 100
+num_relabel: 1000

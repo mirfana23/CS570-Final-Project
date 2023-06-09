@@ -1,10 +1,10 @@
 dataset:
-  json_dir: /root/CS570-Final-Project/datasets/imgnet1k_our/train0.json # the base path should be adjusted
+  json_dir: /root/CS570-Final-Project/datasets/imgnet1k_original/val.json # the base path should be adjusted
   num_workers: 0 # this should be updated
 
 load_from_checkpoint: False
 device: cuda
-relabeled_dataset_save_path: /root/CS570-Final-Project/datasets/imgnet1k_our/train1_mc_dropout.json # the base path should be adjusted
+relabeled_dataset_save_path: /root/CS570-Final-Project/datasets/imgnet1k_original/val_mc_dropout.json # the base path should be adjusted
 
 crop_method: random
 num_crops: 10
@@ -14,4 +14,4 @@ confidence_measure: mc_dropout
 dropout_rate: 0.05
 post_proc_logits: average
 threshold: 0.5
-num_relabel: 100
+num_relabel: 1000

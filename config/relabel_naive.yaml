@@ -14,4 +14,4 @@ confidence_measure: naive
 dropout_rate: 0.05
 post_proc_logits: average
 threshold: 0.6
-num_relabel: 100
+num_relabel: 100000

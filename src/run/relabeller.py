@@ -97,7 +97,7 @@ def relabel(x, y, model, confidence_measure="mc_dropout", post_proc_logits='aver
 if __name__ == '__main__':
     # Command line arguments, only need to provide config path
     argparser = argparse.ArgumentParser()
-    argparser.add_argument('--config', type=str, default='/root/CS570-Final-Project/config/relabel_base.yaml')
+    argparser.add_argument('--config', type=str, default='/root/CS570-Final-Project/config/relabel_mc_perturbation.yaml')
     args = argparser.parse_args()
 
     # Load config file
