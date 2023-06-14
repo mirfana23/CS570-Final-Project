@@ -1,4 +1,4 @@
-confidence_measure: mc_dropout
+confidence_measure: naive
 crop_method: random
 crop_size_method: range
 dataset:
@@ -9,5 +9,5 @@ dropout_rate: 0.05
 load_from_checkpoint: false
 num_crops: 10
 post_proc_logits: majority
-relabeled_dataset_save_path: /root/CS570-Final-Project/datasets/imgnet1k_original/random_10_range_mc_dropout_majority_0.8.json
+relabeled_dataset_save_path: /root/CS570-Final-Project/datasets/imgnet1k_original/random_10_range_naive_majority_0.8.json
 threshold: 0.8

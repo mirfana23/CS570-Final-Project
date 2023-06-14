@@ -1,6 +1,6 @@
 import pickle
 
-path = 'results5.pkl'
+path = 'results4.pkl'
 results = pickle.load(open(path, 'rb'))
 
 def check_requirements(key, requirements):
@@ -20,12 +20,15 @@ def get_best_results(results, metric, requirements, k=3):
 # print(results[('random', 3, 'range', 'mc_dropout', 'majority', 0.2)])
 
 requirements = [
-    (3, 'mc_perturbation')
+    (3, 'mc_perturbation'),
+    # (3, 'mc_dropout'),
+    # (3, 'naive'),
 ]
 
 metrics = [
     'Average jaccard similarity',
     'Average precision',
+    'Average recall',
     'Average f1 score',
 ]
 

@@ -69,8 +69,8 @@ optimizer = torch.optim.Adam(model.parameters(), lr=config.optimizer.lr, weight_
 
 # Initialize the loss function
 # NOTE: Subject to change, this is an example
-loss_fn = torch.nn.BCELoss()
-sigmoid = torch.nn.Sigmoid()
+# loss_fn = torch.nn.BCELoss()
+loss_fn = torch.nn.MultiLabelSoftMarginLoss()
 
 # Initialize the scheduler
 # NOTE: Subject to change, this is an example
@@ -84,13 +84,16 @@ for epoch in range(config.num_epochs):
 
     metric_avg = MetricAvg(['avg_loss'])
     model.train()
+    print(model)
     progress_bar = tqdm(train_loader)
     print(f'Training on {config.train_dataset.name}')
     for x, y in progress_bar:
         x = x.to(config.device)
         y = y.to(config.device)
         optimizer.zero_grad()
-        y_hat = sigmoid(model(x))
+        # y_hat = torch.sigmoid(model(x))
+        y_hat = model(x)
+        # print(y_hat)
         loss = loss_fn(y_hat, y)
         loss.backward()
         optimizer.step()
@@ -121,7 +124,7 @@ for epoch in range(config.num_epochs):
                 x = x[y_sum > 0]
                 y = y[y_sum > 0]
 
-                y_hat = sigmoid(model(x))
+                y_hat = model(x)
                 loss = loss_fn(y_hat, y)
                 
                 metric_avg.update('avg_loss', loss.item(), 1) # NOTE: We send the batch-wise average loss here. If you wish to send individual losses, change this to loss.item() * batch_size, batch_size

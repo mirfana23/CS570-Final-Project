@@ -9,7 +9,7 @@ for module_path in module_paths:
         sys.path.append(module_path)
 
 # import necessary files
-from tqdm import tqdm
+#from tqdm import tqdm
 import json
 import random
 import numpy as np
@@ -23,7 +23,7 @@ import argparse
 
 # parse arguments
 parser = argparse.ArgumentParser()
-parser.add_argument('--pred_dataset_path', type=str, default='/root/CS570-Final-Project/datasets/imgnet1k_original/val.json', help='path to the prediction dataset')
+parser.add_argument('--pred_dataset_path', type=str, default='/root/CS570-Final-Project/final_result/val_naive.json', help='path to the prediction dataset')
 parser.add_argument('--gt_dataset_path', type=str, default='/root/CS570-Final-Project/datasets/imgnet1k_ReaL/val.json', help='path to the ground truth dataset')
 parser.add_argument('--exclude_val', type=str, default=None, help='whether to exclude the validation set from the training set')
 args = parser.parse_args()

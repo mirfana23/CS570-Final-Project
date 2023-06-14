@@ -1,0 +1,32 @@
+train_dataset:
+  name: train0
+  json_dir: ../../datasets/imgnet1k_our/train1_mc_dropout.json
+  batch_size: 1024
+  num_workers: 8
+
+val_datasets:
+  - name: ReaL
+    json_dir: ../../datasets/imgnet1k_ReaL/val.json
+    batch_size: 1024
+    num_workers: 8
+  - name: orig
+    json_dir: ../../datasets/imgnet1k_original/val.json
+    batch_size: 1024
+    num_workers: 8
+  # - name: shankar
+  #   json_dir: /root/CS570-Final-Project/datasets/imgnet1k_shankar/val.json
+  #   batch_size: 512
+  #   num_workers: 4
+
+optimizer:
+  lr: 0.0001
+  weight_decay: 0.0001
+
+num_epochs: 50
+load_from_checkpoint: True
+start_epoch: 0
+scheduler:
+  step_size: 30
+  gamma: 0.1
+device: cuda
+save_checkpoint_interval : 2
