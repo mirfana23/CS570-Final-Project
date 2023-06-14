@@ -60,6 +60,12 @@ cd src/run
 python relabeller.py --config ../../config/relabel_mc_perturbation.yaml
 ```
 
+### Where are dataset JSON files are located
+The JSON files that store information of the dataset path and labels are located under the `datasets` folder. This folder contains the following subfolders:
+- **imgnet1k_original:** It contains the label information for the original and relabelled validation set samples. Moreover, it contains the resulting JSON files from the hyper parameter search on the validation set. 
+- **imgnet1k_our:** It contains the label information for the original and relabelled training set samples. `train0.json` contains the original single labels for the training set. Files starting with `train1` contain the relabelled multi-labels for the training set.
+- **imgnet1k_ReaL:** It contains the label information for the ReaL validation set.
+
 ### How to Train a Resnet50 Model 
 
 #### With the Original Dataset
